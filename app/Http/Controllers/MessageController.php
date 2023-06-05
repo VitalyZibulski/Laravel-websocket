@@ -2,12 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Message\StoreRequest;
+use App\Http\Resources\Message\MessageResource;
+use App\Models\Message;
 
 class MessageController extends Controller
 {
     public function index()
     {
-        return inertia('Message/Index');
+        $messages = Message::latest()->get();
+        $messages = MessageResource::collection($messages)->resolve();
+
+        return inertia('Message/Index', compact('messages'));
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $data = $request->validated();
+        $message = Message::create($data);
+
+        return MessageResource::make($message)->resolve();
     }
 }
