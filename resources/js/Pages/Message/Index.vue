@@ -31,6 +31,14 @@ export default {
             body: ''
         }
     },
+
+    created() {
+        window.Echo.channel('store_message')
+            .listen('.store_message', res => {
+                this.messages.unshift(res.message);
+            });
+    },
+
     methods: {
         store() {
             axios.post('/messages', {
