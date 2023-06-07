@@ -27,7 +27,7 @@ export default {
     },
 
     created() {
-        window.Echo.channel(`send_like_${this.$page.props.auth.user.id}`)
+        window.Echo.private(`send_like_${this.$page.props.auth.user.id}`)
             .listen('.send_like', res => {
                this.like_str = res.like_str
             });
